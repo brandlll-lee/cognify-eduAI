@@ -1,0 +1,83 @@
+[
+  {
+    "id": "q5",
+    "questionNumber": 5,
+    "questionText": "Find a word in paragraphs 2, 3 or 4 which has a similar meaning to each word or phrase given below. (3 marks)",
+    "type": "fill-in-blank",
+    "subQuestions": [
+      {
+        "id": "q5_i",
+        "questionText": "(i) restrict",
+        "correctAnswer": "limits",
+        "marks": 1
+      },
+      {
+        "id": "q5_ii",
+        "questionText": "(ii) strong",
+        "correctAnswer": "solid",
+        "marks": 1
+      },
+      {
+        "id": "q5_iii",
+        "questionText": "(iii) too much of something",
+        "correctAnswer": "overkill",
+        "marks": 1
+      }
+    ],
+    "totalMarks": 3,
+    "skillType": "vocabulary",
+    "referenceParagraphs": ["p2", "p3", "p4"]
+  },
+  {
+    "id": "q11",
+    "questionNumber": 11,
+    "questionText": "Which of the following is NOT mentioned as a benefit of writing flash fiction in paragraph 9?",
+    "type": "multiple-choice",
+    "options": [
+      "A. ability to write more",
+      "B. more efficient use of words",
+      "C. clearer focus on the key elements of the story",
+      "D. better ability to remove unimportant material"
+    ],
+    "correctAnswer": "A",
+    "totalMarks": 1,
+    "skillType": "detail",
+    "referenceParagraphs": ["p10"]
+  },
+  {
+    "id": "q20",
+    "questionNumber": 20,
+    "questionText": "Below is a timeline of some of the events experienced by Timothy. Look at paragraphs 10-16 and write the letter of the correct option in the boxes given below. Use each letter ONCE only. Two options are NOT used.",
+    "type": "timeline-sequencing",
+    "timelineEvents": [
+      { "id": "event1", "position": "i", "description": "One month ago" },
+      { "id": "event2", "position": "ii", "description": "" },
+      {
+        "id": "event3",
+        "position": "fixed",
+        "description": "Billy teased Timothy"
+      },
+      { "id": "event4", "position": "iii", "description": "" },
+      {
+        "id": "event5",
+        "position": "fixed",
+        "description": "Timothy won the competition"
+      }
+    ],
+    "availableOptions": [
+      { "letter": "A", "description": "Timothy caused an explosion" },
+      { "letter": "B", "description": "Timothy slept" },
+      { "letter": "C", "description": "Timothy cried" },
+      { "letter": "D", "description": "Timothy 'volunteered'" },
+      { "letter": "E", "description": "Timothy made Professor Snookhorn angry" }
+    ],
+    "correctAnswers": {
+      "i": "B",
+      "ii": "D",
+      "iii": "A"
+    },
+    "totalMarks": 3,
+    "skillType": "sequencing",
+    "referenceParagraphs": ["p11", "p12", "p13", "p14", "p15", "p16", "p17"]
+  }
+]

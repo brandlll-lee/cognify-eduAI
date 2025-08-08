@@ -31,5 +31,5 @@ cmds = [
 ]
 
 [start]
-# 启动命令 - 使用uvicorn直接启动，绑定到Railway提供的端口
-cmd = "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+# 启动命令 - 使用python -m uvicorn 启动，绑定到Railway提供的端口
+cmd = "cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"

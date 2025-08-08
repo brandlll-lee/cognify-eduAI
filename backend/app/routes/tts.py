@@ -159,6 +159,40 @@ async def synthesize_audio(request: TTSRequest):
         )
 
 
+@router.post("/cancel")
+async def cancel_all_tts_tasks():
+    """
+    取消所有活跃的TTS任务
+    
+    当用户点击停止按钮时调用
+    """
+    logger.info("收到取消所有TTS任务的请求")
+    
+    if not tts_service.is_available():
+        raise HTTPException(
+            status_code=503,
+            detail="TTS服务不可用"
+        )
+    
+    try:
+        await tts_service.cancel_all_tasks()
+        return {
+            "success": True,
+            "message": "已取消所有活跃的TTS任务",
+            "timestamp": logger.handlers[0].formatter.formatTime(logger.makeRecord(
+                name="tts", level=20, pathname="", lineno=0,
+                msg="", args=(), exc_info=None
+            )) if logger.handlers else None
+        }
+        
+    except Exception as e:
+        logger.error(f"取消TTS任务失败: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail="取消TTS任务失败"
+        )
+
+
 @router.get("/health")
 async def tts_health():
     """

@@ -11,7 +11,7 @@ PYTHONUNBUFFERED = "1"
 # 设置UTF-8编码
 PYTHONIOENCODING = "utf-8"
 # 让Python能找到自定义安装位置的包
-PYTHONPATH = "/app/.python_packages/lib/python3.11/site-packages"
+PYTHONPATH = "/app/.python_packages"
 
 [phases.setup]
 # 安装系统依赖

@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     
     # CORS配置
     ALLOWED_ORIGINS: Union[List[str], str] = [
+        "https://764d2c34aed5.ngrok-free.app"
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:8080",

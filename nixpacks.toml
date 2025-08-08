@@ -1,0 +1,41 @@
+# Railway部署配置文件 - DSE AI Teacher API Backend
+# 这个配置适用于FastAPI Python应用的Railway部署
+
+[variables]
+# 设置Python版本
+PYTHON_VERSION = "3.11"
+# 禁用Python字节码缓存，减少容器大小
+PYTHONDONTWRITEBYTECODE = "1"
+# 确保输出不缓冲，便于日志查看
+PYTHONUNBUFFERED = "1"
+# 设置UTF-8编码
+PYTHONIOENCODING = "utf-8"
+
+[phases.setup]
+# 安装系统依赖
+nixPkgs = ["python311", "python311Packages.pip", "python311Packages.setuptools"]
+
+[phases.install]
+# 安装Python依赖
+cmds = [
+    "cd backend",
+    "pip install --upgrade pip",
+    "pip install -r requirements.txt"
+]
+
+[phases.build]
+# 构建阶段 - 确保数据目录和日志目录存在
+cmds = [
+    "mkdir -p logs",
+    "mkdir -p data",
+    # 检查并创建必要的目录结构
+    "python -c \"import os; os.makedirs('logs', exist_ok=True)\""
+]
+
+[start]
+# 启动命令 - 使用uvicorn直接启动，绑定到Railway提供的端口
+cmd = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+
+[providers]
+# 指定使用Python提供商
+python = "3.11"

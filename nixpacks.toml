@@ -26,16 +26,12 @@ cmds = [
 [phases.build]
 # 构建阶段 - 确保数据目录和日志目录存在
 cmds = [
+    "cd backend",
     "mkdir -p logs",
-    "mkdir -p data",
-    # 检查并创建必要的目录结构
+    "mkdir -p ../data",
     "python -c \"import os; os.makedirs('logs', exist_ok=True)\""
 ]
 
 [start]
 # 启动命令 - 使用uvicorn直接启动，绑定到Railway提供的端口
-cmd = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
-
-[providers]
-# 指定使用Python提供商
-python = "3.11"
+cmd = "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"

@@ -97,12 +97,7 @@ app = FastAPI(
 # CORS中间件配置
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:8080",
-        "http://127.0.0.1:8080"
-    ],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -271,7 +266,7 @@ async def startup_event():
     logger.info(f"{settings.APP_NAME} v{settings.VERSION} 启动中...")
     logger.info(f"调试模式: {settings.DEBUG}")
     logger.info(f"API文档: http://{settings.HOST}:{settings.PORT}/docs")
-    logger.info("CORS配置 - 允许的来源: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:8080', 'http://127.0.0.1:8080']")
+    logger.info(f"CORS配置 - 允许的来源: {settings.ALLOWED_ORIGINS}")
     
     # 检查关键配置
     if not settings.OPENROUTER_API_KEY:

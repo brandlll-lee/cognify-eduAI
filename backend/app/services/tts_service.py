@@ -149,7 +149,7 @@ class TTSService:
             
             ws = await websockets.connect(
                 self.ws_url, 
-                additional_headers=headers, 
+                extra_headers=headers,  # 🔥 修复：使用extra_headers而不是additional_headers
                 ssl=ssl_context,
                 ping_interval=20,
                 ping_timeout=10,

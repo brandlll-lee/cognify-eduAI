@@ -70,14 +70,21 @@ class TTSService:
         
         # 检查配置
         if not self.api_key or not self.group_id:
-            logger.error("Minimax TTS服务配置不完整，请检查MINIMAX_API_KEY和MINIMAX_GROUP_ID")
+            logger.error("❌ Minimax TTS服务配置不完整:")
+            logger.error(f"   MINIMAX_API_KEY: {'✅ 已配置' if self.api_key else '❌ 未配置'}")
+            logger.error(f"   MINIMAX_GROUP_ID: {'✅ 已配置' if self.group_id else '❌ 未配置'}")
+            logger.error("   请在环境变量或.env文件中配置这些参数")
             self._available = False
         else:
             self._available = True
-            logger.info("Minimax WebSocket TTS服务初始化成功")
+            logger.info("✅ Minimax WebSocket TTS服务初始化成功")
+            logger.info(f"   模型: {self.model}")
+            logger.info(f"   WebSocket URL: {self.ws_url}")
     
     def is_available(self) -> bool:
         """检查TTS服务是否可用"""
+        if not self._available:
+            logger.warning("⚠️ TTS服务不可用 - 请检查MiniMax API配置")
         return self._available
     
     async def cancel_all_tasks(self):

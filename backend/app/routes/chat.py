@@ -24,6 +24,7 @@ import httpx
 from datetime import datetime
 
 from ..core.config import get_settings
+from ..core.multilingual_prompts import get_system_prompt, is_supported_language # 🔥 新增：导入多语言提示词
 
 # 创建路由器
 router = APIRouter(
@@ -49,6 +50,7 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     conversation_history: List[ChatMessage] = []
+    language_boost: str = "Chinese,Yue"  # 🔥 新增：语言增强设置，默认粤语
 
 class ChatResponse(BaseModel):
     response: str
@@ -106,12 +108,13 @@ TEACHER_SYSTEM_PROMPT = """你係蘭老師，一位經驗豐富嘅香港中學�
 記住：做一個**簡潔而有用**嘅老師，每個回答都要讓學生真正學到嘢！"""
 
 
-async def stream_openrouter_response(messages: List[Dict[str, str]]) -> AsyncGenerator[str, None]:
+async def stream_openrouter_response(messages: List[Dict[str, str]], language_boost: str = "Chinese,Yue") -> AsyncGenerator[str, None]:
     """
     调用OpenRouter API获取流式响应
     
     Args:
         messages: 对话消息列表
+        language_boost: 语言增强设置，用于选择对应的系统提示词
         
     Yields:
         str: 流式响应的文本片段
@@ -130,9 +133,13 @@ async def stream_openrouter_response(messages: List[Dict[str, str]]) -> AsyncGen
         "X-Title": "DSE AI Teacher"
     }
     
-    # 构建消息列表（包含系统提示词）
+    # 🔥 根据语言设置获取对应的系统提示词
+    system_prompt = get_system_prompt(language_boost)
+    logger.info(f"使用语言设置: {language_boost}")
+    
+    # 构建消息列表（包含多语言系统提示词）
     api_messages = [
-        {"role": "system", "content": TEACHER_SYSTEM_PROMPT}
+        {"role": "system", "content": system_prompt}
     ] + messages
     
     payload = {
@@ -215,7 +222,7 @@ async def chat_stream(request: ChatRequest):
         async def generate_response():
             try:
                 buffer = ""
-                async for chunk in stream_openrouter_response(messages):
+                async for chunk in stream_openrouter_response(messages, request.language_boost):
                     buffer += chunk
                     # 发送Server-Sent Events格式的数据
                     yield f"data: {json.dumps({'content': chunk, 'done': False})}\n\n"

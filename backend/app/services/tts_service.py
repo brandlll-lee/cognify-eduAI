@@ -179,7 +179,7 @@ class TTSService:
             logger.error(f"WebSocket连接失败: {e}")
             return None
     
-    async def _start_tts_task(self, websocket, text: str) -> bool:
+    async def _start_tts_task(self, websocket, text: str, language_boost: Optional[str] = None) -> bool:
         """
         发送任务开始请求
         
@@ -194,7 +194,7 @@ class TTSService:
             start_msg = {
                 "event": "task_start",
                 "model": self.model,
-                "language_boost":"Chinese,Yue",
+                "language_boost": language_boost or "Chinese,Yue",
                 "voice_setting": {
                     "voice_id": "female-shaonv-jingpin",  # 使用乔皮萌妹声音
                     "speed": 1.0,
@@ -337,7 +337,7 @@ class TTSService:
         except Exception as e:
             logger.warning(f"关闭WebSocket连接时出错: {e}")
     
-    async def synthesize_text_stream(self, text: str) -> AsyncGenerator[bytes, None]:
+    async def synthesize_text_stream(self, text: str, language_boost: Optional[str] = None) -> AsyncGenerator[bytes, None]:
         """
         流式语音合成主方法
         
@@ -397,7 +397,7 @@ class TTSService:
                     return
                 
                 # 启动TTS任务
-                if not await self._start_tts_task(websocket, cleaned_text):
+                if not await self._start_tts_task(websocket, cleaned_text, language_boost):
                     logger.error(f"任务 {task_id} 无法启动TTS任务")
                     return
                 

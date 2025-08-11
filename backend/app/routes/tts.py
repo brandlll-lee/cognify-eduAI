@@ -32,6 +32,7 @@ class TTSRequest(BaseModel):
     """TTS请求模型"""
     text: str
     voice: Optional[str] = "zh-HK-HiuMaanNeural"  # 默认使用粤语女声
+    language_boost: Optional[str] = None
 
 
 class TTSResponse(BaseModel):
@@ -65,7 +66,7 @@ async def synthesize_stream(request: TTSRequest):
     try:
         async def generate_audio():
             """生成音频流"""
-            async for audio_chunk in tts_service.synthesize_text_stream(request.text):
+            async for audio_chunk in tts_service.synthesize_text_stream(request.text, request.language_boost):
                 yield audio_chunk
         
         return StreamingResponse(
@@ -120,7 +121,7 @@ async def synthesize_audio(request: TTSRequest):
         chunk_count = 0  # 🔥 DEBUG: 统计块数量
         
         logger.debug(f"开始收集音频数据流...")
-        async for chunk in tts_service.synthesize_text_stream(request.text):
+        async for chunk in tts_service.synthesize_text_stream(request.text, request.language_boost):
             chunk_count += 1
             chunk_size = len(chunk) if chunk else 0
             logger.debug(f"收到第{chunk_count}个音频块，大小: {chunk_size} bytes")

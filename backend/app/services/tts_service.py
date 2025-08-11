@@ -191,12 +191,23 @@ class TTSService:
             bool: 是否成功启动任务
         """
         try:
+            # 按语言选择不同的voice_id
+            def select_voice_id(lang: str) -> str:
+                if lang == "Chinese":
+                    return "Chinese (Mandarin)_Soft_Girl"
+                if lang == "Japanese":
+                    return "Japanese_KindLady"
+                # 默认：粤语
+                return "Chinese (Mandarin)_HK_Flight_Attendant"
+
+            voice_id = select_voice_id(language_boost)
+
             start_msg = {
                 "event": "task_start",
                 "model": self.model,
                 "language_boost": language_boost,
                 "voice_setting": {
-                    "voice_id": "danya_xuejie",  # 使用乔皮萌妹声音
+                    "voice_id": voice_id,
                     "speed": 1.0,
                     "vol": 1.0,
                     "pitch": 0,
@@ -210,6 +221,7 @@ class TTSService:
                 }
             }
             
+            logger.info(f"TTS 语言: {language_boost} | 语音: {voice_id}")
             logger.debug(f"发送task_start: {json.dumps(start_msg, ensure_ascii=False)}")
             await websocket.send(json.dumps(start_msg))
             

@@ -196,7 +196,7 @@ class TTSService:
                 "model": self.model,
                 "language_boost": language_boost,
                 "voice_setting": {
-                    "voice_id": "female-shaonv-jingpin",  # 使用乔皮萌妹声音
+                    "voice_id": "danya_xuejie",  # 使用乔皮萌妹声音
                     "speed": 1.0,
                     "vol": 1.0,
                     "pitch": 0,

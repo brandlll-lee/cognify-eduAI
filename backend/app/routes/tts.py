@@ -32,7 +32,7 @@ class TTSRequest(BaseModel):
     """TTS请求模型"""
     text: str
     voice: Optional[str] = "zh-HK-HiuMaanNeural"  # 默认使用粤语女声
-    language_boost: Optional[str] = None
+    language_boost: Optional[str] = "Chinese,Yue"  # 默认粤语增强
 
 
 class TTSResponse(BaseModel):

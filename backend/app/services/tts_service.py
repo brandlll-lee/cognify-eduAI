@@ -179,7 +179,7 @@ class TTSService:
             logger.error(f"WebSocket连接失败: {e}")
             return None
     
-    async def _start_tts_task(self, websocket, text: str, language_boost: Optional[str] = None) -> bool:
+    async def _start_tts_task(self, websocket, text: str, language_boost: str = "Chinese,Yue") -> bool:
         """
         发送任务开始请求
         
@@ -194,7 +194,7 @@ class TTSService:
             start_msg = {
                 "event": "task_start",
                 "model": self.model,
-                "language_boost": language_boost or "Chinese,Yue",
+                "language_boost": language_boost,
                 "voice_setting": {
                     "voice_id": "female-shaonv-jingpin",  # 使用乔皮萌妹声音
                     "speed": 1.0,
@@ -337,12 +337,13 @@ class TTSService:
         except Exception as e:
             logger.warning(f"关闭WebSocket连接时出错: {e}")
     
-    async def synthesize_text_stream(self, text: str, language_boost: Optional[str] = None) -> AsyncGenerator[bytes, None]:
+    async def synthesize_text_stream(self, text: str, language_boost: str = "Chinese,Yue") -> AsyncGenerator[bytes, None]:
         """
         流式语音合成主方法
         
         Args:
             text: 要合成的文本
+            language_boost: 语言增强设置，如"Chinese,Yue"、"Chinese"、"Japanese"等
             
         Yields:
             bytes: 音频数据块

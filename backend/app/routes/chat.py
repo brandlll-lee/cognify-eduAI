@@ -44,7 +44,7 @@ settings = get_settings()
 
 # 请求和响应模型
 class ChatMessage(BaseModel):
-    role: str  # "user" 或 "assistant"
+    role: str  # "user" | "assistant" | "system"
     content: str
 
 class ChatRequest(BaseModel):
@@ -136,6 +136,7 @@ async def stream_openrouter_response(messages: List[Dict[str, str]], language_bo
     # 🔥 根据语言设置获取对应的系统提示词
     system_prompt = get_system_prompt(language_boost)
     logger.info(f"使用语言设置: {language_boost}")
+    logger.debug(f"system prompt preview: {system_prompt[:120]}...")
     
     # 追加严格语言指令，防止模型偏离
     try:
@@ -220,10 +221,15 @@ async def chat_stream(request: ChatRequest):
                 "content": msg.content
             })
         
-        # 添加当前用户消息
+        # 添加当前用户消息（在前面加语言前缀，进一步强化）
+        try:
+            from ..core.multilingual_prompts import get_user_language_prefix
+            user_prefixed = f"{get_user_language_prefix(request.language_boost)}\n{request.message}"
+        except Exception:
+            user_prefixed = request.message
         messages.append({
             "role": "user",
-            "content": request.message
+            "content": user_prefixed
         })
         
         # 定义流式响应生成器

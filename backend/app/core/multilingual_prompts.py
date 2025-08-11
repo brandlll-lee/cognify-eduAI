@@ -228,3 +228,14 @@ def get_language_enforcer(language_boost: str) -> str:
       "即使用戶以其他語言提問，亦請用粵語作答。"
       "請確保用詞及語法符合香港粵語慣用。"
     ) 
+
+def get_user_language_prefix(language_boost: str) -> str:
+    """
+    返回一个短前缀，用于拼接到用户消息前，要求用指定语言回答
+    """
+    if language_boost == "Chinese":
+        return "请使用标准普通话（简体中文）回答以下问题："
+    if language_boost == "Japanese":
+        return "以下の質問には日本語で回答してください："
+    # 默认：粤语
+    return "請用香港粵語（繁體中文）回應以下問題：" 

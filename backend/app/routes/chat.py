@@ -137,6 +137,13 @@ async def stream_openrouter_response(messages: List[Dict[str, str]], language_bo
     system_prompt = get_system_prompt(language_boost)
     logger.info(f"使用语言设置: {language_boost}")
     
+    # 追加严格语言指令，防止模型偏离
+    try:
+        from ..core.multilingual_prompts import get_language_enforcer
+        system_prompt = system_prompt + "\n\n" + get_language_enforcer(language_boost)
+    except Exception:
+        pass
+    
     # 构建消息列表（包含多语言系统提示词）
     api_messages = [
         {"role": "system", "content": system_prompt}
@@ -146,8 +153,9 @@ async def stream_openrouter_response(messages: List[Dict[str, str]], language_bo
         "model": "google/gemini-2.5-flash-lite",  # 使用免费的Gemini模型
         "messages": api_messages,
         "stream": True,
-        "temperature": 0.7,
-        "max_tokens": 15000,
+        "temperature": 0.6,
+        "top_p": 0.9,
+        "max_tokens": 4000,
     }
     
     try:

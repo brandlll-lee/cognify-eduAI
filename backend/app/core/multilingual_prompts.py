@@ -205,3 +205,26 @@ def is_supported_language(language_boost: str) -> bool:
         bool: 是否支持该语言
     """
     return language_boost in MULTILINGUAL_PROMPTS 
+
+def get_language_enforcer(language_boost: str) -> str:
+    """
+    返回严格的语言使用指令，确保模型遵循所选语言回复
+    """
+    if language_boost == "Chinese":
+      return (
+        "重要：从现在起，所有回复一律使用标准普通话（简体中文）。"
+        "即使用户使用其他语言提问，也请用普通话回复。"
+        "请确保用词与语法符合普通话规范。"
+      )
+    if language_boost == "Japanese":
+      return (
+        "重要: これからのすべての返答は日本語で行ってください。"
+        "たとえユーザーが他の言語で質問しても、日本語でお答えください。"
+        "用語と文体は自然な日本語で、分かりやすく丁寧に。"
+      )
+    # 默认：粤语
+    return (
+      "重要：之後所有回應請一律使用香港粵語（繁體中文）。"
+      "即使用戶以其他語言提問，亦請用粵語作答。"
+      "請確保用詞及語法符合香港粵語慣用。"
+    ) 

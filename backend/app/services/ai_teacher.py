@@ -906,7 +906,7 @@ class AITeacherService:
             self._process_explanation_format(result_data)
             
             # 验证必要字段
-            required_fields = ["results", "final_score", "correct_count", "total_questions"]
+            required_fields = ["results", "final_score", "correct_count", "total_questions", "skill_breakdown", "strengths_detailed", "weaknesses_detailed"]
             for field in required_fields:
                 if field not in result_data:
                     raise Exception(f"AI响应缺少必要字段: {field}")
@@ -1790,6 +1790,9 @@ class AITeacherService:
             correct_count=correct_count,
             total_questions=total_sub_questions,
             ability_analysis="AI服务暂时不可用，无法提供详细的能力分析。请稍后重试。",
+            skill_breakdown=[],
+            strengths_detailed=[],
+            weaknesses_detailed=[],
             strengths=["基础理解"],
             weaknesses=["需要更多练习"],
             recommendations=["继续练习阅读理解", "注意题目要求", "提高答题准确性"],
